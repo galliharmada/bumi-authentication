@@ -1,5 +1,7 @@
+require('dotenv').config();
 import express from 'express';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import User from '../models/User';
 
 const router = express.Router();
@@ -37,7 +39,21 @@ router.post('/login', async (req, res) => {
         {
             return res.status(404).json({message: 'User not found'})
         }
+        const isPasswordValid = await bcrypt.compare(password, user.password)
+        if(!isPasswordValid)
+        {
+            return res.status(401).json({message: 'Invalid password'})
+        }
+        
         /** generate token send JWT for authentication */
+        const secret = process.env.SECRET_KEY as string
+        const token = jwt.sign({userId : user.id}, secret, { 'expiresIn':'1h'})
+        res.status(200).json({
+            token : token,
+            user : user.email,
+            expiresIn : '1h' 
+        })
+
     } catch (error) {
         console.log(error)
         res.status(500).json({message: 'Internal server error'})

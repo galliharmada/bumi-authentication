@@ -1,39 +1,34 @@
-import express, { Express } from 'express';	
-import mongoose, { ConnectOptions } from 'mongoose';
-import dotenv from 'dotenv';
+require('dotenv').config();
+import express from 'express';	
+import mongoose from 'mongoose';
 
-/** Load env variabled from .env file */
-dotenv.config();
-
-const app : Express = express();
+const app = express();
 app.use(express.json())
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 
 /** Connect to database */
 async function connect() {
     try {
-        const URI = process.env.MONGODB_URI
+        const URI:string = process.env.MONGODB_URI as string
         mongoose.set("strictQuery", false)
         await mongoose.connect(URI)
-        console.log("Connected to MongoDB")
+        console.log("Connected to database")
     } catch (error) {
         
     }
 }
-
 connect()
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error'));
-db.once('open', () => {
-    console.log('Connected to MongoDB')
-});
 
 import authRoutes from './src/routes/auth';
-app.use('api/auth', authRoutes);
+app.use('/api/auth', authRoutes);
 
 /** start server */
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`)
 });
+
+export default app
