@@ -10,7 +10,7 @@ Create effective & efficient code
 Mongodb database implementation
 
 Requirements
-Node.js JavaScript run-time environment ✔️ &nbsp;
+Node.js JavaScript run-time environment ✔️
 Express Node. js framework ✔️
 Typescript for type checking ✔️
 Jest, ts-jest for unit testing ⚠️
@@ -19,3 +19,7 @@ ESLint Code Linting ✔️
 Prettier Code Formatting ✔️
 Git for code collaboration ✔️
 Mongodb & MySQL for databases ✔️
+
+
+==================
+npm install --save
